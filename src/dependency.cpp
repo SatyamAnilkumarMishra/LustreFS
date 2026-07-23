@@ -11,11 +11,11 @@ bool DependencyChecker::check_and_install() {
 
     if (targetcli) std::cout << "    [✓] Found targetcli" << std::endl;
     if (iscsiadm)  std::cout << "    [✓] Found iscsiadm" << std::endl;
-    if (fio)      std::cout << "    [✓] Found fio" << std::endl;
+    if (fio)       std::cout << "    [✓] Found fio" << std::endl;
 
     bool lustre = (system("which mkfs.lustre > /dev/null 2>&1") == 0);
     if (!lustre) {
-        std::cout << "    [!] mkfs.lustre not found natively. Ext4 fallback mode enabled for block storage testing." << std::endl;
+        std::cout << "    [!] mkfs.lustre not found natively. Ext4 fallback mode enabled." << std::endl;
     }
 
     return true;

@@ -1,4 +1,4 @@
-#include "iscsi_initiator.hpp"
+#include "initiator.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <thread>

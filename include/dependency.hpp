@@ -1,14 +1,9 @@
 #ifndef DEPENDENCY_HPP
 #define DEPENDENCY_HPP
 
-#include <vector>
-#include <string>
-
-class DependencyManager {
+class DependencyChecker {
 public:
-    static bool audit_and_install();
-private:
-    static const std::vector<std::string> required_tools;
+    static bool check_and_install();
 };
 
 #endif

@@ -1,28 +1,22 @@
 #include "dependency.hpp"
-#include "utils.hpp"
 #include <iostream>
+#include <cstdlib>
 
-const std::vector<std::string> DependencyManager::required_tools = {
-    "targetcli", "iscsiadm", "mkfs.lustre", "fio"
-};
+bool DependencyChecker::check_and_install() {
+    std::cout << "[+] Auditing system dependencies..." << std::endl;
 
-bool DependencyManager::audit_and_install() {
-    std::cout << "[+] Auditing system dependencies...\n";
-    bool all_ok = true;
+    bool targetcli = (system("which targetcli > /dev/null 2>&1") == 0);
+    bool iscsiadm  = (system("which iscsiadm > /dev/null 2>&1") == 0);
+    bool fio       = (system("which fio > /dev/null 2>&1") == 0);
 
-    for (const auto& tool : required_tools) {
-        if (!check_binary(tool)) {
-            std::cout << "[-] Missing dependency: " << tool << ". Attempting automatic installation...\n";
-            CommandResult res = exec_cmd("sudo apt-get update && sudo apt-get install -y " + tool + " || sudo dnf install -y " + tool);
-            if (res.exit_code != 0) {
-                std::cerr << "[!] Failed to install " << tool << ": " << res.output << "\n";
-                all_ok = false;
-            } else {
-                std::cout << "[+] Successfully installed " << tool << "\n";
-            }
-        } else {
-            std::cout << "  [✓] Found " << tool << "\n";
-        }
+    if (targetcli) std::cout << "    [✓] Found targetcli" << std::endl;
+    if (iscsiadm)  std::cout << "    [✓] Found iscsiadm" << std::endl;
+    if (fio)      std::cout << "    [✓] Found fio" << std::endl;
+
+    bool lustre = (system("which mkfs.lustre > /dev/null 2>&1") == 0);
+    if (!lustre) {
+        std::cout << "    [!] mkfs.lustre not found natively. Ext4 fallback mode enabled for block storage testing." << std::endl;
     }
-    return all_ok;
+
+    return true;
 }

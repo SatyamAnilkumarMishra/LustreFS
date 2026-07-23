@@ -102,7 +102,7 @@ int main() {
     // -----------------------------------------------------------------
     std::cout << "\n[STEP 8/8] Verifying Pipeline Final Status...\n";
     std::cout << "=======================================================\n";
-    std::cout << "  [✓] ALL 8 PROJECT REQUIREMENTS EXECUTED SUCCESSFULLY \n";
+    std::cout << "  [✓] ALL 8  REQUIREMENTS EXECUTED SUCCESSFULLY \n";
     std::cout << "=======================================================\n";
 
     return 0;

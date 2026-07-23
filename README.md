@@ -42,7 +42,6 @@ Automated Workload Benchmarking: Programmatically generates and executes multi-j
 Self-Healing Fault Recovery: Features a simulated network fault-injector that drops active target sessions and verifies immediate client re-discovery without manual operator intervention.
 
 🏗️ System Architecture
-Plaintext
   ┌────────────────────────────────────────────────────────────────────────┐
   │                           main.cpp (Pipeline Runner)                   │
   └────────────────────────────────────────────────────────────────────────┘
@@ -60,8 +59,8 @@ Plaintext
      │ (.hpp/.cpp) │ │ (.hpp/.cpp) │ │ (.hpp/.cpp) │ │ (.hpp/.cpp) │
      └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
       FIO Testing     Fault Drop      System Exec     Logging/Paths
+
 📁 Project Directory Structure
-Plaintext
 LustreFS-main/
 ├── CMakeLists.txt            # CMake build orchestration rules
 ├── install.sh                # Automated build and compilation script
@@ -84,33 +83,43 @@ LustreFS-main/
     ├── ops.cpp               # Low-level process runner logic
     ├── target.cpp            # Targetcli LIO driver wrapper
     └── utils.cpp             # Path management & SHA-256 verification
-(Directory structure based on LustreFS-main project modules[cite: 3])
+
 
 🛠️ Prerequisites & Dependencies
 For Ubuntu 22.04 LTS
+
 Bash
 sudo apt update
 sudo apt install -y build-essential cmake targetcli-fb open-iscsi fio
+
+
 For RHEL 8 / 9
+
 Bash
+
 sudo dnf update -y
 sudo dnf groupinstall -y "Development Tools"
 sudo dnf install -y cmake targetcli iscsi-initiator-utils fio
 
 # Start and enable the iSCSI daemon on RHEL
 sudo systemctl enable --now iscsid
+
+
+
 🔨 Building & Installation
 Clone the Repository:
 
 Bash
-git clone https://github.com/your-username/LustreFS.git
-cd LustreFS-main
+git clone https://github.com/SatyamAnilkumarMishra/LustreFS.git
+cd LustreFS
+
 Run Automated Build Script:
 The included install.sh script automates directory creation, CMake configuration, and g++ compilation[cite: 3]:
 
 Bash
 chmod +x install.sh
 sudo ./install.sh
+
 Verify Binary Output:
 After compilation completes, the primary executable will be generated at ./build/lustre_mgmt.
 
@@ -119,6 +128,7 @@ Because SAN provisioning and kernel block device binding require elevated privil
 
 Bash
 sudo ./build/lustre_mgmt
+
 Manual Inspection Commands Post-Run
 Once execution completes, you can inspect the generated targets and session states:
 
@@ -135,6 +145,7 @@ sudo iscsiadm -m session
 # 4. Inspect block device tree and active mounts
 lsblk
 df -h /mnt/lustre_mdt
+
 🔄 Pipeline Execution Steps
 When invoked, lustre_mgmt sequentially runs through the 8 storage lifecycle steps:
 
@@ -159,3 +170,4 @@ All benchmark metrics generated during Step 6 are saved to the project log direc
 
 Bash
 cat ./benchmark_logs/fio_results.log
+

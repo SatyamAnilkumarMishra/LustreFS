@@ -1,27 +1,21 @@
+#define OPENSSL_SUPPRESS_DEPRECATED
 #include "ops.hpp"
-#include <cstring>     
+#include <cstring>      
 #include <iostream>
 #include <fstream>
 #include <fcntl.h>
 #include <unistd.h>
 #include <iomanip>
 #include <sstream>
-
-// Suppress OpenSSL 3.0 deprecation warnings for SHA256 API
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <openssl/sha.h>
-#pragma GCC diagnostic pop
 
 bool IOOps::write_direct_io(const std::string& filepath, const std::string& data) {
-    // Open file with O_DIRECT to bypass OS page cache
     int fd = open(filepath.c_str(), O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT, 0644);
     if (fd < 0) {
         std::cerr << "[-] Error opening file for Direct I/O: " << filepath << std::endl;
         return false;
     }
 
-    // Direct I/O requires sector-aligned memory buffers (512-byte alignment)
     size_t alignment = 512;
     size_t size = (data.size() + alignment - 1) & ~(alignment - 1);
     void* buffer = nullptr;
@@ -32,7 +26,6 @@ bool IOOps::write_direct_io(const std::string& filepath, const std::string& data
         return false;
     }
 
-    // Zero out buffer and copy payload data
     std::memset(buffer, 0, size);
     std::memcpy(buffer, data.c_str(), data.size());
 
@@ -47,7 +40,6 @@ bool IOOps::evict_cache(const std::string& filepath) {
     int fd = open(filepath.c_str(), O_RDONLY);
     if (fd < 0) return false;
 
-    // Flush page cache for the file descriptor
     int res = posix_fadvise(fd, 0, 0, POSIX_FADV_DONTNEED);
     close(fd);
     return res == 0;

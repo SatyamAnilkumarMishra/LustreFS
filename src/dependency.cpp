@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 
-bool DependencyChecker::check_and_install() {
+static bool perform_audit() {
     std::cout << "[+] Auditing system dependencies..." << std::endl;
 
     bool targetcli = (system("which targetcli > /dev/null 2>&1") == 0);
@@ -20,3 +20,10 @@ bool DependencyChecker::check_and_install() {
 
     return true;
 }
+
+// Implement all name combinations so any caller succeeds
+bool DependencyChecker::check_and_install() { return perform_audit(); }
+bool DependencyChecker::audit_and_install() { return perform_audit(); }
+
+bool DependencyManager::check_and_install() { return perform_audit(); }
+bool DependencyManager::audit_and_install() { return perform_audit(); }

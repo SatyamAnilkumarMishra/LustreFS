@@ -5,7 +5,8 @@
 
 class ISCSITarget {
 public:
+    static bool setup_export(const std::string& backstore, const std::string& img_path, const std::string& size_gb, const std::string& target_iqn);
     static bool setup_target(const std::string& img_path, const std::string& target_iqn);
 };
 
-#endif 
+#endif // TARGET_HPP

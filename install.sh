@@ -36,7 +36,7 @@ apt-get install -y \
 # 3. System Services Configuration
 echo -e "\n${YELLOW}[2/5] Enabling iSCSI & Target daemon services...${NC}"
 systemctl enable --now iscsid || true
-systemctl enable --now targetctl || true
+systemctl enable --now targetcli || true
 
 # 4. Prepare Mount & Log Directory Hierarchy
 echo -e "\n${YELLOW}[3/5] Setting up system directories...${NC}"
@@ -57,10 +57,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Find required OpenSSL / Crypto library for SHA-256
 find_package(OpenSSL REQUIRED)
 
-# Include header directory
-include_directories(include src)
+# Search root directory, include/, and src/ for header files
+include_directories(. include src "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-# Collect source files matching your naming scheme
+# Collect all source files dynamically
 file(GLOB SOURCES 
     "src/*.cpp" 
     "*.cpp"
@@ -75,6 +75,7 @@ echo "[+] Updated CMakeLists.txt to compile project modules."
 
 # 6. Build Project Binary
 echo -e "\n${YELLOW}[5/5] Compiling C++ binary...${NC}"
+rm -rf build
 mkdir -p build
 cd build
 

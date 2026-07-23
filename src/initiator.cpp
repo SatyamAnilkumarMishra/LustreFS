@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 
-bool ISCSIInitiator::connect_target(const std::string& target_ip, const std::string& target_iqn) {
+std::string ISCSIInitiator::discover_and_login(const std::string& target_ip, const std::string& target_iqn) {
     std::cout << "[+] Executing iSCSI Discovery on " << target_ip << "..." << std::endl;
     std::string disc_cmd = "iscsiadm -m discovery -t st -p " + target_ip + " > /dev/null 2>&1";
     system(disc_cmd.c_str());
@@ -12,5 +12,9 @@ bool ISCSIInitiator::connect_target(const std::string& target_ip, const std::str
     system(login_cmd.c_str());
 
     std::cout << "[+] iSCSI Target successfully imported as block device: /dev/sdb" << std::endl;
-    return true;
+    return "/dev/sdb";
+}
+
+bool ISCSIInitiator::connect_target(const std::string& target_ip, const std::string& target_iqn) {
+    return !discover_and_login(target_ip, target_iqn).empty();
 }

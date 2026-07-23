@@ -4,12 +4,12 @@
 #include <thread>
 
 #include "dependency.hpp"
-#include "iscsi_target.hpp"
-#include "iscsi_initiator.hpp"
-#include "lustre_manager.hpp"
-#include "io_ops.hpp"
+#include "target.hpp"
+#include "initiator.hpp"
+#include "manager.hpp"
+#include "ops.hpp"
 #include "benchmark.hpp"
-#include "fault_injector.hpp"
+#include "injector.hpp"
 
 int main() {
     std::cout << "=======================================================\n";
